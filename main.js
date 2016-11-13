@@ -1,5 +1,7 @@
-var canvas, context; // public variables to hold Canvas references
+var canvas;
 var stage;
+var keys = {};
+var player;
 
 function init() {
 	stage = new createjs.Stage("stagecanvas");
@@ -9,25 +11,33 @@ function init() {
 	];
 	
 	//to do: load multiple assets
-	var player = new Image();
-    player.src = "assets/red_squire.png";
-    player.onload = handleComplete;
+	var playerimg = new Image();
+    playerimg.src = "assets/red_squire.png";
+    playerimg.onload = handleComplete;
 	
-	drawDude();
+	createjs.Ticker.addEventListener("tick", tick);
+    createjs.Ticker.setFPS(30);
+	
+	this.document.onkeydown = keydown;
+    this.document.onkeyup = keyup;
 }
 
 function handleComplete(event) {
 	var image = event.target;
-	var player = new createjs.Bitmap(image);
+	player = new createjs.Bitmap(image);
 	stage.addChild(player);
 	player.x = 200;
 	player.y = 100;
 	
-	drawCircle();
+	//drawCircle();
 }
 
-function drawDude() {
-	
+function tick() {
+	if (keys[37]) player.x -= 5;
+    if (keys[38]) player.y -= 5;
+    if (keys[39]) player.x += 5;
+    if (keys[40]) player.y += 5;
+    stage.update();
 }
 
 function drawCircle() {
@@ -38,4 +48,12 @@ function drawCircle() {
 	circle.y = 100;
 	stage.addChild(circle);
 	stage.update();
+}
+
+function keydown(event) {
+    keys[event.keyCode] = true;
+}
+
+function keyup(event) {
+    delete keys[event.keyCode];
 }
