@@ -2,6 +2,7 @@ var canvas;
 var stage;
 var keys = {};
 var player;
+var lastDown = 0;
 
 var gridSize = 24;
 
@@ -64,19 +65,32 @@ function tick() {
 
 function movePlayer() {
 	//read keyboard input
-	if (keys[37]) { //left
+	
+	var ignoreUpDown = false;
+	if ((keys[37] || keys[39]) && (keys[38] || keys[40])) {
+		//conflict
+		if (lastDown == 37 || lastDown == 39) {
+			ignoreUpDown = true;
+		}
+	}
+	
+	if (keys[37] && !keys[39]) { //left
 		player.view.scaleX = 1;
 		player.nextMovement = LEFT;
 	}
-    if (keys[38]) { //up
-		player.nextMovement = UP;
-	}
-    if (keys[39]) { //right
+    else if (keys[39] && !keys[37]) { //right
 		player.view.scaleX = -1;
 		player.nextMovement = RIGHT;
 	}
-    if (keys[40]) { //down
-		player.nextMovement = DOWN;
+	
+	if (!ignoreUpDown)
+	{
+		if (keys[38] && !keys[40]) { //up
+			player.nextMovement = UP;
+		}
+		else if (keys[40] && !keys[38]) { //down
+			player.nextMovement = DOWN;
+		}
 	}
 	
 	if (player.movement == STILL) {
@@ -110,6 +124,7 @@ function drawCircle() {
 
 function keydown(event) {
     keys[event.keyCode] = true;
+	lastDown = event.keyCode;
 }
 
 function keyup(event) {
