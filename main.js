@@ -1,7 +1,9 @@
 var canvas;
 var stage;
 var keys = {};
-var player;
+var player = new Object();
+
+var gridSize = 24;
 
 function init() {
 	stage = new createjs.Stage("stagecanvas");
@@ -24,20 +26,37 @@ function init() {
 
 function handleComplete(event) {
 	var image = event.target;
-	player = new createjs.Bitmap(image);
-	stage.addChild(player);
-	player.x = 200;
-	player.y = 100;
+	player.view = new createjs.Bitmap(image);
+	stage.addChild(player.view);
+	player.view.x = 200;
+	player.view.y = 100;
+	player.view.regX = player.view.image.width / 2;
+}
+
+function updatePlayerView() {
 	
-	//drawCircle();
 }
 
 function tick() {
-	if (keys[37]) player.x -= 5;
-    if (keys[38]) player.y -= 5;
-    if (keys[39]) player.x += 5;
-    if (keys[40]) player.y += 5;
+	movePlayer();
     stage.update();
+}
+
+function movePlayer() {
+	if (keys[37]) {
+		player.view.scaleX = 1;
+		player.view.x -= 5;
+	}
+    if (keys[38]) {
+		player.view.y -= 5;
+	}
+    if (keys[39]) {
+		player.view.scaleX = -1;
+		player.view.x += 5;
+	}
+    if (keys[40]) {
+		player.view.y += 5;
+	}
 }
 
 function drawCircle() {
