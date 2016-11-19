@@ -1,9 +1,15 @@
 var canvas;
 var stage;
 var keys = {};
-var player = new Object();
+var player;
 
 var gridSize = 24;
+
+var LEFT = {x: -1, y: 0};
+var RIGHT = {x:1, y:0};
+var UP = {x:0, y:-1};
+var DOWN = {x:0, y:1};
+var STILL = {x:0, y:0};
 
 function init() {
 	stage = new createjs.Stage("stagecanvas");
@@ -15,7 +21,7 @@ function init() {
 	//to do: load multiple assets
 	var playerimg = new Image();
     playerimg.src = "assets/red_squire.png";
-    playerimg.onload = handleComplete;
+    playerimg.onload = playerImageLoaded;
 	
 	createjs.Ticker.addEventListener("tick", tick);
     createjs.Ticker.setFPS(30);
@@ -24,17 +30,31 @@ function init() {
     this.document.onkeyup = keyup;
 }
 
-function handleComplete(event) {
+function playerImageLoaded(event) {
+	setUpPlayer();
 	var image = event.target;
 	player.view = new createjs.Bitmap(image);
+	player.view.regX = gridSize / 2;
 	stage.addChild(player.view);
-	player.view.x = 200;
-	player.view.y = 100;
-	player.view.regX = player.view.image.width / 2;
+	updatePlayerView();
+}
+
+function setUpPlayer() {
+	player = new Object();
+	
+	player.speed = 4; //preferably factor of gridSize
+	player.x = 2;
+	player.y = 2;
+	
+	player.movement = STILL;
+	player.nextMovement = STILL;
+	
+	player.moveProgress = 0;
 }
 
 function updatePlayerView() {
-	
+	player.view.x = player.x * gridSize + (player.movement.x * player.moveProgress * player.speed) + gridSize / 2;
+	player.view.y = player.y * gridSize + (player.movement.y * player.moveProgress * player.speed);
 }
 
 function tick() {
@@ -43,20 +63,39 @@ function tick() {
 }
 
 function movePlayer() {
-	if (keys[37]) {
+	//read keyboard input
+	if (keys[37]) { //left
 		player.view.scaleX = 1;
-		player.view.x -= 5;
+		player.nextMovement = LEFT;
 	}
-    if (keys[38]) {
-		player.view.y -= 5;
+    if (keys[38]) { //up
+		player.nextMovement = UP;
 	}
-    if (keys[39]) {
+    if (keys[39]) { //right
 		player.view.scaleX = -1;
-		player.view.x += 5;
+		player.nextMovement = RIGHT;
 	}
-    if (keys[40]) {
-		player.view.y += 5;
+    if (keys[40]) { //down
+		player.nextMovement = DOWN;
 	}
+	
+	if (player.movement == STILL) {
+		player.movement = player.nextMovement;
+		player.nextMovement = STILL;
+		player.moveProgress = 0;
+	}
+	
+	if (player.movement != STILL) {
+		player.moveProgress += 1;
+		if (player.moveProgress * player.speed >= gridSize) {
+			player.x = player.x + player.movement.x;
+			player.y = player.y + player.movement.y;
+			player.movement = STILL;
+			player.moveProgress = 0;
+		}
+	}
+	
+	updatePlayerView();
 }
 
 function drawCircle() {
@@ -75,4 +114,17 @@ function keydown(event) {
 
 function keyup(event) {
     delete keys[event.keyCode];
+	if (event.keyCode == 37 && player.nextMovement == LEFT) {
+		player.nextMovement = STILL;
+	}
+	if (event.keyCode == 38 && player.nextMovement == UP) {
+		player.nextMovement = STILL;
+	}
+	if (event.keyCode == 39 && player.nextMovement == RIGHT) {
+		player.nextMovement = STILL;
+	}
+	if (event.keyCode == 40 && player.nextMovement == DOWN) {
+		player.nextMovement = STILL;
+	}
+
 }
