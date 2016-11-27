@@ -16,17 +16,13 @@ function init() {
 	stage = new createjs.Stage("stagecanvas");
 	
 	manifest = [
-		{src: "oryx_16bit_fantasy_world_trans.png", id: "worldsheet"},
-		{src: "oryx_16bit_fantasy_creatures_trans.png", id: "actorsheet"},
-		{src: "red_squire.png", id: "temp"},
+		{src: "worldsheet.png", id: "worldsheet"},
+		{src: "actorsheet.png", id: "actorsheet"},
 	];
 	
 	loader = new createjs.LoadQueue(false);
 	loader.addEventListener("complete", handleComplete);
 	loader.loadManifest(manifest, true, "assets/");
-	
-	createjs.Ticker.addEventListener("tick", tick);
-    createjs.Ticker.setFPS(30);
 	
 	this.document.onkeydown = keydown;
     this.document.onkeyup = keyup;
@@ -35,7 +31,8 @@ function init() {
 function handleComplete() {
 	setUpPlayer();
 	
-	
+	createjs.Ticker.addEventListener("tick", tick);
+    createjs.Ticker.setFPS(30);
 }
 
 function tick() {

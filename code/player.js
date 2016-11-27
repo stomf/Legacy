@@ -10,9 +10,16 @@ function setUpPlayer() {
 	
 	player.moveProgress = 0;
 	
-	var image = loader.getResult("temp");
-	player.view = new createjs.Bitmap(image);
-	player.view.regX = gridSize / 2;
+	var playerSpriteSheetData = {
+		framerate: 30,
+		"images": [loader.getResult("actorsheet")],
+		"frames": {width:24, height:24, count:402, regX: 12, regY:12, spacing:0, margin:0},
+		"animations": {"stand": {frames: [9, 27], speed: 0.1}}
+	};
+	
+	var playerSpriteSheet = new createjs.SpriteSheet(playerSpriteSheetData);
+	player.view = new createjs.Sprite(playerSpriteSheet, "stand");
+	
 	stage.addChild(player.view);
 	updatePlayerView();
 }
