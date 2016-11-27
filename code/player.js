@@ -9,6 +9,12 @@ function setUpPlayer() {
 	player.nextMovement = STILL;
 	
 	player.moveProgress = 0;
+	
+	var image = loader.getResult("temp");
+	player.view = new createjs.Bitmap(image);
+	player.view.regX = gridSize / 2;
+	stage.addChild(player.view);
+	updatePlayerView();
 }
 
 function updatePlayerView() {

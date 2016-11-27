@@ -15,20 +15,15 @@ var STILL = {x:0, y:0};
 function init() {
 	stage = new createjs.Stage("stagecanvas");
 	
-	//to do: load multiple assets
-//	manifest = [
-//		{src: "oryx_16bit_fantasy_world_trans.png", id: "worldsheet"},
-//		{src: "oryx_16bit_fantasy_creatures_trans.png", id: "actorsheet"},
-//		{src: "red_squire.png", id: "temp"},
-//	];
+	manifest = [
+		{src: "oryx_16bit_fantasy_world_trans.png", id: "worldsheet"},
+		{src: "oryx_16bit_fantasy_creatures_trans.png", id: "actorsheet"},
+		{src: "red_squire.png", id: "temp"},
+	];
 	
-//	loader = new createjs.LoadQueue(false);
-//	loader.addEventListener("complete", handleComplete);
-//	loader.loadManifest(manifest, true, "assets/");
-	
-	var playerimg = new Image();
-    playerimg.src = "assets/red_squire.png";
-    playerimg.onload = playerImageLoaded;
+	loader = new createjs.LoadQueue(false);
+	loader.addEventListener("complete", handleComplete);
+	loader.loadManifest(manifest, true, "assets/");
 	
 	createjs.Ticker.addEventListener("tick", tick);
     createjs.Ticker.setFPS(30);
@@ -37,13 +32,10 @@ function init() {
     this.document.onkeyup = keyup;
 }
 
-function playerImageLoaded(event) {
+function handleComplete() {
 	setUpPlayer();
-	var image = event.target;
-	player.view = new createjs.Bitmap(image);
-	player.view.regX = gridSize / 2;
-	stage.addChild(player.view);
-	updatePlayerView();
+	
+	
 }
 
 function tick() {
