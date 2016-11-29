@@ -29,6 +29,7 @@ function init() {
 }
 
 function handleComplete() {
+	setUpMap();
 	setUpPlayer();
 	
 	createjs.Ticker.addEventListener("tick", tick);
