@@ -11,9 +11,8 @@ function setUpPlayer() {
 	player.moveProgress = 0;
 	
 	var playerSpriteSheetData = {
-		framerate: 30,
 		"images": [loader.getResult("actorsheet")],
-		"frames": {width:24, height:24, count:402, regX: 12, regY:12, spacing:0, margin:0},
+		"frames": {width:24, height:24, count:402, regX: 12, regY:0, spacing:0, margin:0},
 		"animations": {"stand": {frames: [9, 27], speed: 0.1}}
 	};
 	
@@ -25,8 +24,8 @@ function setUpPlayer() {
 }
 
 function updatePlayerView() {
-	player.view.x = player.x * gridSize + (player.movement.x * player.moveProgress * player.speed) + gridSize / 2;
-	player.view.y = player.y * gridSize + (player.movement.y * player.moveProgress * player.speed);
+	player.view.x = player.x * GRIDSIZE + (player.movement.x * player.moveProgress * player.speed) + GRIDSIZE / 2;
+	player.view.y = player.y * GRIDSIZE + (player.movement.y * player.moveProgress * player.speed);
 }
 
 function movePlayer() {
@@ -67,7 +66,7 @@ function movePlayer() {
 	
 	if (player.movement != STILL) {
 		player.moveProgress += 1;
-		if (player.moveProgress * player.speed >= gridSize) {
+		if (player.moveProgress * player.speed >= GRIDSIZE) {
 			player.x = player.x + player.movement.x;
 			player.y = player.y + player.movement.y;
 			player.movement = STILL;

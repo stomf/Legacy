@@ -4,7 +4,7 @@ var keys = {};
 var player;
 var lastDown = 0;
 
-var gridSize = 24;
+var GRIDSIZE = 24;
 
 var LEFT = {x: -1, y: 0};
 var RIGHT = {x:1, y:0};
