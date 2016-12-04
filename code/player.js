@@ -1,3 +1,5 @@
+'use strict';
+
 function setUpPlayer() {
 	player = new Object();
 	

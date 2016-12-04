@@ -1,3 +1,5 @@
+'use strict';
+
 var canvas;
 var stage;
 var keys = {};
@@ -12,10 +14,12 @@ var UP = {x:0, y:-1};
 var DOWN = {x:0, y:1};
 var STILL = {x:0, y:0};
 
+var loader;
+
 function init() {
 	stage = new createjs.Stage("stagecanvas");
 	
-	manifest = [
+	var manifest = [
 		{src: "worldsheet.png", id: "worldsheet"},
 		{src: "actorsheet.png", id: "actorsheet"},
 	];
@@ -24,8 +28,8 @@ function init() {
 	loader.addEventListener("complete", handleComplete);
 	loader.loadManifest(manifest, true, "assets/");
 	
-	this.document.onkeydown = keydown;
-    this.document.onkeyup = keyup;
+	window.document.onkeydown = keydown;
+    window.document.onkeyup = keyup;
 }
 
 function handleComplete() {
@@ -50,3 +54,4 @@ function keyup(event) {
     delete keys[event.keyCode];
 	haltPlayerMovement(event.keyCode);
 }
+
