@@ -61,7 +61,7 @@ function movePlayer() {
 	}
 	
 	if (player.movement == STILL) {
-		player.movement = player.nextMovement;
+		tryMove();
 		player.nextMovement = STILL;
 		player.moveProgress = 0;
 	}
@@ -77,6 +77,14 @@ function movePlayer() {
 	}
 	
 	updatePlayerView();
+}
+
+function tryMove() {
+	var targetx = player.x + player.nextMovement.x;
+	var targety = player.y + player.nextMovement.y;
+	if (traversible(targetx, targety)) {
+		player.movement = player.nextMovement;
+	}
 }
 
 function haltPlayerMovement(keyCode) {

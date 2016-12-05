@@ -47,6 +47,10 @@ function generateMap() {
 	];
 }
 
+function traversible(x, y) {
+	return (getTile(x,y) == 0);
+}
+
 function drawMap() {
 	for (var x = 0; x < MAPXSIZE; x++) { 
 		for (var y = 0; y < MAPYSIZE; y++) {
