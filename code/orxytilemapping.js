@@ -7,7 +7,7 @@ function getTileImage(x, y) {
 	//in: x,y location of tile
 	//out: number of tile for that location
 	//known: global tile map
-	var tileType = getTile(x,y);
+	var tileType = getTile(x,y).content;
 	//1 = wall,
 	//0 = floor.
 	if (tileType == 0) {
