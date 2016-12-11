@@ -31,7 +31,8 @@ function drawMap() {
 function getTile(x,y) {
 	if ((x < 0) || (x >= MAPXSIZE) || (y < 0) || (y >= MAPYSIZE)) {
 		//off-map
-		return 0;
+		var t = {x : x, y : y, content : BLOCKED, isCorner : false, protectedDoor : false};
+		return t;
 	}
 	return map[y][x];
 }
