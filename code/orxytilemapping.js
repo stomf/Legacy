@@ -19,7 +19,29 @@ function getTileImage(x, y) {
 	var tileLeft = getTile(x-1, y);
 	var tileRight = getTile(x+1, y);
 	
-	var tileIndex = tileRight + tileBelow*2 + tileLeft*4 + tileAbove * 8;
+	var tileAboveContent = 0;
+	var tileBelowContent = 0;
+	var tileLeftContent = 0;
+	var tileRightContent = 0;
+	
+	if (isWall(tileAbove)) {
+		tileAboveContent = 1;
+	}
+	
+	if (isWall(tileBelow)) {
+		tileBelowContent = 1;
+	}
+
+	if (isWall(tileLeft)) {
+		tileLeftContent = 1;
+	}
+
+	if (isWall(tileRight)) {
+		tileRightContent = 1;
+	}
+
+	
+	var tileIndex = tileRightContent + tileBelowContent*2 + tileLeftContent*4 + tileAboveContent * 8;
 	
 	return (mapDressing * 54) + tileMap[tileIndex];
 }
