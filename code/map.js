@@ -15,11 +15,6 @@ function setUpMap() {
 	drawMap();
 }
 
-
-function traversible(x, y) {
-	return (getTile(x,y).content == 0);
-}
-
 function drawMap() {
 	for (var x = 0; x < MAPXSIZE; x++) { 
 		for (var y = 0; y < MAPYSIZE; y++) {
@@ -29,7 +24,7 @@ function drawMap() {
 }
 
 function getTile(x,y) {
-	if ((x < 0) || (x >= MAPXSIZE) || (y < 0) || (y >= MAPYSIZE)) {
+	if ((x <= 0) || (x >= MAPXSIZE-1) || (y <= 0) || (y >= MAPYSIZE-1)) {
 		//off-map
 		var t = {x : x, y : y, content : BLOCKED, isCorner : false, protectedDoor : false};
 		return t;

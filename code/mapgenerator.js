@@ -26,32 +26,7 @@ var stairUpLoc = {x : 2, y : 2};
 var stairDownLoc = {x : 2, y : 2};
 		
 function generateMap() {
-	//test map for debugging
 	
-	/*
-	map = [
-	[1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
-	[1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1],
-	[1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 1, 1, 0, 1],
-	[1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 1, 0, 1],
-	[1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 1, 0, 1],
-	[1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 1],
-	[1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
-	[1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
-	[1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
-	[1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
-	[1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
-	[1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
-	[1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1],
-	[1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 1],
-	[1, 1, 1, 1, 1, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 0, 1, 1],
-	[1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 0, 0, 1, 0, 0, 0, 1],
-	[1, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 1, 0, 0, 0, 0, 0, 0, 1],
-	[1, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 0, 0, 1, 0, 0, 0, 1],
-	[1, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 1],
-	[1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
-	];
-	*/
 	makeDungeon();
 	
 }
@@ -62,7 +37,7 @@ function makeDungeon() {
 	{
 		resetTileList();
 		
-		for (var i = 1; i < 12; i++)
+		for (var i = 1; i < 120; i++)
 		{
 			makeRoom();
 		}
@@ -127,14 +102,14 @@ function makeRoom() {
 	var roomSize = {x: 0, y: 0}; 
 	var roomObject = {roomTileList : [], borderTileList : [], cornerTileList : [], blockTileList : []};
 	//the centre of the room
-	var roomLocX = oddyfy(Math.floor(Math.random() * MAPXSIZE));
-	var roomLocY = oddyfy(Math.floor(Math.random() * MAPYSIZE));
+	var roomLocX = oddyfy(1 + Math.floor(Math.random() * (MAPXSIZE - 2)));
+	var roomLocY = oddyfy(1 + Math.floor(Math.random() * (MAPYSIZE - 2)));
 	
 	//the size of the room
 	hollowOutRectangle(roomObject, roomLocX, roomLocY, 5, roomSize);
 	
 	//chance to leave room simple rectangle
-	if (Math.random() < -0.6)
+	if (Math.random() < 0.6)
 	{
 		if (roomObject.roomTileList.length < 30)
 		{
@@ -171,14 +146,20 @@ function makeRoom() {
 	//check for overlaps with existing rooms
 	for (var i = 0; i < roomObject.borderTileList.length; i++) {
 		if (roomObject.borderTileList[i].content == FLOOR) {
-			console.log("Failed at 1: overlap at " + roomObject.borderTileList[i].x + "," + roomObject.borderTileList[i].y + ", content was " + roomObject.borderTileList[i].content + " which was equal to " + FLOOR); 
+			//console.log("Failed at 1: overlap at " + roomObject.borderTileList[i].x + "," + roomObject.borderTileList[i].y + ", content was " + roomObject.borderTileList[i].content + " which was equal to " + FLOOR); 
+			fail = true;
+			break;
+		}
+		if (roomObject.borderTileList[i].x == 0 || roomObject.borderTileList[i].x == MAPXSIZE-1 || roomObject.borderTileList[i].y == 0 || roomObject.borderTileList[i].y == MAPYSIZE-1)
+		{
+			//too close to the edge.
 			fail = true;
 			break;
 		}
 	}
 	for (var i = 0; i < roomObject.roomTileList.length; i++) {
 		if (roomObject.roomTileList[i].content != WALL) {
-			console.log("Failed at 2: overlap at " + roomObject.roomTileList[i].x + "," + roomObject.roomTileList[i].y + ", content was " + roomObject.roomTileList[i].content + " which was not equal to " + WALL); 
+			//console.log("Failed at 2: overlap at " + roomObject.roomTileList[i].x + "," + roomObject.roomTileList[i].y + ", content was " + roomObject.roomTileList[i].content + " which was not equal to " + WALL); 
 			fail = true;
 			break;
 		}
@@ -189,25 +170,25 @@ function makeRoom() {
 		for (var i = 0; i < roomObject.blockTileList.length; i++) {
 			roomObject.blockTileList[i].content = BLOCKED;
 		}
-		console.log ("Added blocked tiles, room size is now " + newRoom.length);
+		//console.log ("Added blocked tiles, room size is now " + newRoom.length);
 		for (var i = 0; i < roomObject.borderTileList.length; i++) {
 			if (roomObject.borderTileList[i].content != BLOCKED) {
 				roomObject.borderTileList[i].content = PERIMETER;
 				newRoom.push(roomObject.borderTileList[i]);
 			}
 		}
-		console.log ("Added border tiles, Room size is now " + newRoom.length);
+		//console.log ("Added border tiles, Room size is now " + newRoom.length);
 		for (var i = 0; i < roomObject.roomTileList.length; i++) {
 			if (roomObject.roomTileList[i].content != BLOCKED) {
 				roomObject.roomTileList[i].content = FLOOR;
 				newRoom.push(roomObject.roomTileList[i]);
 			}
 		}
-		console.log ("Added floor tiles, Room size is now " + newRoom.length);
+		//console.log ("Added floor tiles, Room size is now " + newRoom.length);
 		for (var i = 0; i < roomObject.cornerTileList.length; i++) {
 			roomObject.cornerTileList[i].isCorner = true;
 		}
-		console.log ("Added corner tiles, Room size is now " + newRoom.length);
+		//console.log ("Added corner tiles, Room size is now " + newRoom.length);
 		addNewRoom(newRoom);
 	}
 }
@@ -287,7 +268,7 @@ function hollowOutRectangle(roomObject, roomLocX, roomLocY, maxRoomSize, roomSiz
 	var topBorder = roomLocY - roomSize.y-1;
 	var bottomBorder = roomLocY + roomSize.y+1;
 	
-	console.log ("room width: " + (rightBorder - leftBorder - 1) + ", room height: " + (bottomBorder - topBorder - 1));
+	//console.log ("room width: " + (rightBorder - leftBorder - 1) + ", room height: " + (bottomBorder - topBorder - 1));
 	
 	for (x = leftBorder; x <= rightBorder; x++)
 	{
@@ -296,16 +277,16 @@ function hollowOutRectangle(roomObject, roomLocX, roomLocY, maxRoomSize, roomSiz
 			var t = getTile(x,y);
 			if ((x == leftBorder) || (x == rightBorder) || (y == topBorder) || (y == bottomBorder)) {
 				roomObject.borderTileList.push(t);
-				console.log("added border tile: " + tileString(t));
+				//console.log("added border tile: " + tileString(t));
 			}
 			else {
 				roomObject.roomTileList.push(t);
-				console.log("added room tile: " + tileString(t));
+				//console.log("added room tile: " + tileString(t));
 			}
 		}
 	}
 	
-	console.log("new room, size: " + roomObject.roomTileList.length + " And " + roomObject.borderTileList.length + " border tiles");
+	//console.log("new room, size: " + roomObject.roomTileList.length + " And " + roomObject.borderTileList.length + " border tiles");
 	
 	//push the corners into an array. If this room does not fail, mark the corners so doorways are not placed there.
 	roomObject.cornerTileList.push(getTile(leftBorder, topBorder));
@@ -318,7 +299,7 @@ function hollowOutRectangle(roomObject, roomLocX, roomLocY, maxRoomSize, roomSiz
 		var roomTile = roomObject.roomTileList[i];
 		var roomIndex = roomObject.borderTileList.indexOf(roomTile);
 		if (roomIndex != -1) {
-			console.log("Removing tile " + roomIndex + " from border tile list: " + tileString(roomTile));
+			//console.log("Removing tile " + roomIndex + " from border tile list: " + tileString(roomTile));
 			roomObject.borderTileList.splice(roomIndex, 1);
 		}
 	}
@@ -355,28 +336,21 @@ function uniq(a) {
 			}
 		}
 	}
-	
-	for (var i = 0; i < a.length - 1; i++) {
-		//console.log(a[i]);
-	}
-	
 	return a;
 }
 
 function addNewRoom(newRoom) {
 	//adds the room newRoom to the roomList array
 	//but first remove duplicated tiles
-	console.log("Room has " + newRoom.length + " tiles before duplicates checking, here they are:");
-	debugRoom("New Room", newRoom);
-	
-	//BUG something is putting undefined tiles in this array...
+	//console.log("Room has " + newRoom.length + " tiles before duplicates checking, here they are:");
+	//debugRoom("New Room", newRoom);
 	
 	var i = 0;
 	var j = 0;
 	
 	newRoom = uniq(newRoom);
-	console.log("After duplicates removes, size " + newRoom.length);
-	debugRoom("New Room", newRoom);
+	//console.log("After duplicates removes, size " + newRoom.length);
+	//debugRoom("New Room", newRoom);
 	roomList.push(newRoom);
 }
 
@@ -429,13 +403,30 @@ function xCount(x, room) {
 	return count;
 }
 
+function allDoorsProtected(room) {
+	//return true if all remaining doors in this room are protected
+	//used to prevent an infinite loop issue with removing excessive doors
+	var answer = true;
+	for (var i = 0; i < room.length; i++) {
+		var t = room[i];
+		if ((t.content == DOOR_PROSPECT) && (t.protectedDoor == false)) {
+			//we found an unprotected door
+			answer = false;
+		}
+	}
+	return answer;
+}
+
 function removeExcessDoors() {
 	protectDoors();
 	
-	for (var i = 0; i < roomList.size; i++) {
+	for (var i = 0; i < roomList.length; i++) {
 		var maxDoors = 4;
-		while ((xCount(DOOR_PROSPECT, roomList[i]) > maxDoors) && !allDoorsProtected(roomList[i])) {
+		var doorCount = xCount(DOOR_PROSPECT, roomList[i]);
+		console.log("Counted " + doorCount + " doors.");
+		while (doorCount > maxDoors && !allDoorsProtected(roomList[i])) {
 			cropDoor(roomList[i]);
+			doorCount = xCount(DOOR_PROSPECT, roomList[i]);
 		}
 		protectDoors();
 	}
@@ -444,9 +435,10 @@ function removeExcessDoors() {
 function protectDoors() {
 	//if a room has less than 4 doors, mark remaining doors as protected
 	//to prevent them being removed as part of a door purge on an adjacent room.
-	for (var i = 0; i < roomList.size; i++) {
-		if (xCount(DOOR_PROSPECT, room) < 4) {
-			for (var t in roomList[i]) {
+	for (var i = 0; i < roomList.length; i++) {
+		if (xCount(DOOR_PROSPECT, roomList[i]) < 4) {
+			for (var j = 0; j < roomList[i].length; j++) {
+				var t = roomList[i][j];
 				if (t.content == DOOR_PROSPECT) {
 					t.protectedDoor = true;
 				}
@@ -458,7 +450,7 @@ function protectDoors() {
 function cropDoor (room) {
 	//change a single door prospect tile in the room back into a perimeter tile.
 	var doorList = [];
-	for (var i = 0; i < room.size; i++) {
+	for (var i = 0; i < room.length; i++) {
 		if ((room[i].content == DOOR_PROSPECT) && (room[i].protectedDoor == false)) {
 			doorList.push(room[i]);
 		}
@@ -599,7 +591,7 @@ function openCorridor(x, y) {
 
 function chooseDirection (x, y, dir) {
 //continue the corridor. change dir if we need to turn a corner.
-//set it to (0,0) to end the coridor.
+//set it to (0,0) to end the corridor.
 	var twistyness = 0.5;
 	var nextTile = getTile(x + dir.x, y + dir.y); //next tile corridor will visit if direction does not change
 	var nextTile2 = getTile(x + dir.x * 2, y + dir.y * 2); //and the tile after that
@@ -698,7 +690,7 @@ function selectEmptyTile (room) {
 			tileList.push(room[i]);
 		}
 	}
-	console.log("Room has " + tileList.length + " empty tiles, placing stairs...");
+	//console.log("Room has " + tileList.length + " empty tiles, placing stairs...");
 	if (tileList.length > 0) {
 		return tileList[Math.floor(Math.random() * tileList.length)];
 	}
@@ -715,10 +707,10 @@ function addStairs() {
 	do {
 		var r = Math.floor(Math.random() * roomList.length);
 		room = roomList[r];
-		console.log("Room " + r + " has " + room.length + " tiles.");
+		//console.log("Room " + r + " has " + room.length + " tiles.");
 		stairTile = selectEmptyTile(room);
 		var adjacentEmpties = adjCount(stairTile.x, stairTile.y, FLOOR);
-		console.log("stair tile " + stairTile + " has " + adjacentEmpties + " empty neighbours.");
+		//console.log("stair tile " + stairTile + " has " + adjacentEmpties + " empty neighbours.");
 	}
 	while (adjacentEmpties < 4) //place stairs in middle of a room
 	stairTile.content = UP_STAIRS;
@@ -794,7 +786,7 @@ function tileString(tile) {
 }
 
 function isWall(tile) {
-	return (tile.content == WALL) || (tile.content == PERIMETER);
+	return (tile.content == WALL) || (tile.content == PERIMETER) || (tile.content == BLOCKED);
 }
 
 

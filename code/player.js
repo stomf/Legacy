@@ -4,8 +4,8 @@ function setUpPlayer() {
 	player = new Object();
 	
 	player.speed = 4; //preferably factor of gridSize
-	player.x = 2;
-	player.y = 2;
+	player.x = stairUpLoc.x;
+	player.y = stairUpLoc.y;
 	
 	player.movement = STILL;
 	player.nextMovement = STILL;
@@ -82,7 +82,7 @@ function movePlayer() {
 function tryMove() {
 	var targetx = player.x + player.nextMovement.x;
 	var targety = player.y + player.nextMovement.y;
-	if (traversible(targetx, targety)) {
+	if (!isWall(getTile(targetx, targety))) {
 		player.movement = player.nextMovement;
 	}
 }
