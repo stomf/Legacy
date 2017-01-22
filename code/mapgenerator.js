@@ -17,24 +17,26 @@ var DOWN = {x : 0, y : 1};
 var LEFT = {x : -1, y : 0};
 var RIGHT = {x : 1, y : 0};
 
-var minStairDist = 25;
+var minStairDist = 18;
 var roomList = [];
 var corridorTiles = [];
 var map = [];
 var roomWithStairsDown = [];
 var stairUpLoc = {x : 2, y : 2};
 var stairDownLoc = {x : 2, y : 2};
+var niceMapDressings = [0, 1, 2, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 18];
 		
 function generateMap() {
 	
 	makeDungeon();
 	
+	mapDressing = niceMapDressings[Math.floor(Math.random()*niceMapDressings.length)];
 }
 
 function makeDungeon() {
 	var levelInvalid = false;
-	do
-	{
+	do {
+		levelInvalid = false;
 		resetTileList();
 		
 		for (var i = 1; i < 120; i++)
@@ -48,12 +50,19 @@ function makeDungeon() {
 		openCorridors();
 		removeBadCorridors();
 		addStairs();
-//		betterPathfinding(stairUpLoc._x, stairUpLoc._y, 1000);
-//		levelInvalid = ((stairDownLoc.count < minStairDist) || (stairDownLoc.count == 100000));
-//		if (floorCount() > reachable()) //too many blocked off tiles
-//		{
-//			levelInvalid = true;
-//		}
+		setUpPathfinding(stairUpLoc.x, stairUpLoc.y, 1000);
+		
+		//validate level
+		var stairDist = getTile(stairDownLoc.x, stairDownLoc.y).count;
+		console.log ("stairDist = " + stairDist);
+		levelInvalid = ((stairDist < minStairDist) || (stairDist == 100000));
+		var fCount = floorCount();
+		var rCount = reachable();
+		console.log("reachable " + rCount + ", total " + fCount);
+		if (fCount * 0.9 > rCount) {
+			console.log("too many unreachable tiles");
+			levelInvalid = true;
+		}
 	}
 	while (levelInvalid)
 	
@@ -70,7 +79,7 @@ function resetTileList() {
 	for (var y = 0; y < MAPYSIZE; y++) {
 		var column = [];
 		for (var x = 0; x < MAPXSIZE; x++) {
-			var newTile = {x : x, y : y, content : WALL, isCorner : false, protectedDoor : false};
+			var newTile = {x : x, y : y, content : WALL, isCorner : false, protectedDoor : false, count: 0};
 			column.push(newTile);
 		}
 		map.push(column);
@@ -701,7 +710,7 @@ function selectEmptyTile (room) {
 
 function addStairs() {
 	var room = [];
-	var stairTile = {x : 0, y : 0, content : 0, isCorner : false, protectedDoor : false};
+	var stairTile = {x : 0, y : 0, content : 0, isCorner : false, protectedDoor : false, count : 0};
 	
 	//up stairs
 	do {
@@ -789,4 +798,75 @@ function isWall(tile) {
 	return (tile.content == WALL) || (tile.content == PERIMETER) || (tile.content == BLOCKED);
 }
 
+function resetPathCount() {
+	for (var x = 0; x < MAPXSIZE; x++) {
+		for (var y = 0; y < MAPYSIZE; y++) {
+			getTile(x, y).count = 100000;
+		}
+	}
+}
 
+function moveCost(tile) {
+	var answer = 100000;
+	if (walkable(tile)) {
+		answer = 1;
+	}
+	return answer;
+}
+
+function setUpPathfinding(startX, startY, max) {
+	resetPathCount();
+	
+	var neighbourList = [LEFT, DOWN, UP, RIGHT];
+	//an array containing the four cardinal directions
+	var tilesToCheck = [];
+	//an array containing the list of tiles which we have reached, but not checked yet.
+	tilesToCheck.push(getTile(startX, startY));
+	getTile(startX, startY).count = 0;
+	
+	do {
+		tilesToCheck.sort(function(a, b) {
+			return (a.count) - (b.count);
+		});
+		
+		var sourceTile = tilesToCheck[0];
+		//the tile at the top of the sorted array is the one with the lowest count we haven't checked yet.
+		for (var i = 0; i < neighbourList.length; i++) {
+			var neighbourTile = getTile(sourceTile.x + neighbourList[i].x, sourceTile.y + neighbourList[i].y);
+			if ((neighbourTile.count > sourceTile.count + moveCost(sourceTile)) && walkable(neighbourTile)) {
+				neighbourTile.count = sourceTile.count + moveCost(neighbourTile);
+				if (neighbourTile.count < max) {
+					tilesToCheck.push(neighbourTile);
+				}
+			}
+		}
+		tilesToCheck.splice(0, 1);
+	}
+	while (tilesToCheck.length > 0)
+}
+
+function floorCount() {
+//returns the number of walkable tiles in the dungeon
+	var count = 0;
+	for (var x = 0; x < MAPXSIZE; x++) {
+		for (var y  = 0; y < MAPYSIZE; y++) {
+			if (walkable(getTile(x, y))) {
+				count++;
+			}
+		}
+	}
+	return count;
+}
+
+function reachable() {
+	//returns the number of tiles that can be reached
+	var count = 0;
+	for (var x = 0; x < MAPXSIZE; x++) {
+		for (var y = 0; y < MAPYSIZE; y++) {
+			if (getTile(x, y).count < 100000) {
+				count++;
+			}
+		}
+	}
+	return count;
+}

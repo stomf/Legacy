@@ -1,7 +1,7 @@
 'use strict';
 
 var tileMap = new Array(9, 10, 13, 16, 12, 11, 17, 21, 15, 18, 14, 23, 19, 24, 22, 20);
-var mapDressing = 12;
+var mapDressing = 0;
 
 function getTileImage(x, y) {
 	//in: x,y location of tile
